@@ -16,6 +16,7 @@
 		4B31235B1DF5C0C800F34FC2 /* GitHubAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B31235A1DF5C0C800F34FC2 /* GitHubAPIManager.swift */; };
 		4B31235D1DF5C13200F34FC2 /* GistRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B31235C1DF5C13200F34FC2 /* GistRouter.swift */; };
 		4B31235F1DF5C2B700F34FC2 /* Gist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B31235E1DF5C2B700F34FC2 /* Gist.swift */; };
+		6A9F54491DF65B8A0045C814 /* GitHubAPIManagerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9F54481DF65B8A0045C814 /* GitHubAPIManagerError.swift */; };
 		DA5D6EC26EAF2BDE4E9ADB82 /* Pods_Gist.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 833755D50A3EBE5DCEE711F6 /* Pods_Gist.framework */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +32,7 @@
 		4B31235A1DF5C0C800F34FC2 /* GitHubAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubAPIManager.swift; sourceTree = "<group>"; };
 		4B31235C1DF5C13200F34FC2 /* GistRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GistRouter.swift; sourceTree = "<group>"; };
 		4B31235E1DF5C2B700F34FC2 /* Gist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gist.swift; sourceTree = "<group>"; };
+		6A9F54481DF65B8A0045C814 /* GitHubAPIManagerError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubAPIManagerError.swift; sourceTree = "<group>"; };
 		833755D50A3EBE5DCEE711F6 /* Pods_Gist.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Gist.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B653BA64026A1A0173B8FED3 /* Pods-Gist.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gist.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Gist/Pods-Gist.debug.xcconfig"; sourceTree = "<group>"; };
 		FE0A48BC4EC868A6975D8557 /* Pods-Gist.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gist.release.xcconfig"; path = "Pods/Target Support Files/Pods-Gist/Pods-Gist.release.xcconfig"; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				4B31235A1DF5C0C800F34FC2 /* GitHubAPIManager.swift */,
 				4B31235C1DF5C13200F34FC2 /* GistRouter.swift */,
 				4B31235E1DF5C2B700F34FC2 /* Gist.swift */,
+				6A9F54481DF65B8A0045C814 /* GitHubAPIManagerError.swift */,
 			);
 			path = Gist;
 			sourceTree = "<group>";
@@ -225,6 +228,7 @@
 			files = (
 				4B31234B1DF5BD5000F34FC2 /* DetailViewController.swift in Sources */,
 				4B31235B1DF5C0C800F34FC2 /* GitHubAPIManager.swift in Sources */,
+				6A9F54491DF65B8A0045C814 /* GitHubAPIManagerError.swift in Sources */,
 				4B31235F1DF5C2B700F34FC2 /* Gist.swift in Sources */,
 				4B3123491DF5BD5000F34FC2 /* MasterViewController.swift in Sources */,
 				4B31235D1DF5C13200F34FC2 /* GistRouter.swift in Sources */,

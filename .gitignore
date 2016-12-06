@@ -26,3 +26,4 @@ xcuserdata/
 *.xcscmblueprint
 
 Pods/
+.DS_Store
