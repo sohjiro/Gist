@@ -7,5 +7,6 @@ target 'Gist' do
 
   # Pods for Gist
   pod 'Alamofire'
+  pod 'PINRemoteImage'
 
 end
