@@ -33,11 +33,20 @@ struct GitHubAPIManager {
       completionHandler(image, nil)
     }
   }
-
-  func fetchPublicGists(completionHandler: @escaping (Result<[Gist]>) -> Void) {
-    Alamofire.request(GistRouter.getPublic()).responseJSON { response in
+  
+  func fetchPublicGists(pageToLoad: String?, completionHandler: @escaping (Result<[Gist]>, String?) -> Void) {
+    if let urlString = pageToLoad {
+      fetchGists(GistRouter.getAtPath(urlString), completionHandler: completionHandler)
+    } else {
+      fetchGists(GistRouter.getPublic(), completionHandler: completionHandler)
+    }
+  }
+  
+  func fetchGists(_ urlRequest: URLRequestConvertible, completionHandler: @escaping (Result<[Gist]>, String?) -> Void) {
+    Alamofire.request(urlRequest).responseJSON { response in
       let result = self.gistArrayFromResponse(response: response)
-      completionHandler(result)
+      let next = self.parseNextPageFromHeaders(response: response.response)
+      completionHandler(result, next)
     }
   }
 
@@ -69,12 +78,10 @@ struct GitHubAPIManager {
     guard let linkHeader = response?.allHeaderFields["Link"] as? String else {
       return nil
     }
-    print(linkHeader)
     /* looks like: <https://...?page=2>; rel="next", <https://...?page=6>; rel="last" */
     // so split on ","
     let components = linkHeader.characters.split { $0 == "," }.map { String($0) }
     // now we  have 2 lines like '<https://...?page=2>; rel="next"'
-    print(components)
     
     for item in components {
       let rangeOfNext = item.range(of: "rel=\"next\"", options: [])

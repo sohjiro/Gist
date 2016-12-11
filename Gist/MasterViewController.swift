@@ -13,6 +13,8 @@ class MasterViewController: UITableViewController {
 
   var detailViewController: DetailViewController? = nil
   var gists = [Gist]()
+  var nextPageURLString: String?
+  var isLoading = false
 
 
   override func viewDidLoad() {
@@ -35,19 +37,30 @@ class MasterViewController: UITableViewController {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    loadGists()
+    loadGists(urlToLoad: nil)
   }
 
-  func loadGists() {
-    GitHubAPIManager.sharedInstance.fetchPublicGists() { result in
+  func loadGists(urlToLoad: String?) {
+    self.isLoading = true
+    GitHubAPIManager.sharedInstance.fetchPublicGists(pageToLoad: urlToLoad) { (result, nextPage) in
+      self.isLoading = false
+      self.nextPageURLString = nextPage
+      
       guard result.error == nil else {
         self.handleLoadGistsError(result.error!)
         return
       }
 
-      if let fetchedGists = result.value {
-        self.gists = fetchedGists
+      guard let fetchedGists = result.value else {
+        print("no gists fetched")
+        return
       }
+      
+      if urlToLoad == nil {
+        self.gists = []
+      }
+      
+      self.gists += fetchedGists
 
       self.tableView.reloadData()
     }
@@ -102,13 +115,25 @@ class MasterViewController: UITableViewController {
     
     if let urlString = gist.ownerAvatarURL,
       let url = URL(string: urlString) {
-        cell.imageView?.pin_setImage(from: url, placeholderImage: UIImage(named: "placeholder.png")) { result in
-          if let cellToUpdate = self.tableView?.cellForRow(at: indexPath) {
-            cellToUpdate.setNeedsLayout()
-          }
+      cell.imageView?.pin_setImage(from: url, placeholderImage: UIImage(named: "placeholder.png")) { result in
+        if let cellToUpdate = self.tableView?.cellForRow(at: indexPath) {
+          cellToUpdate.setNeedsLayout()
         }
-      } else {
-        cell.imageView?.image = UIImage(named: "placeholder.png")
+      }
+    } else {
+      cell.imageView?.image = UIImage(named: "placeholder.png")
+    }
+
+    if !isLoading {
+      let rowsLoaded = gists.count
+      let rowsRemaining = rowsLoaded - indexPath.row
+      let rowsToLoadFromBottom = 5
+      
+      if rowsRemaining <= rowsToLoadFromBottom {
+        if let nextPage = nextPageURLString {
+          self.loadGists(urlToLoad: nextPage)
+        }
+      }
     }
     
     return cell
