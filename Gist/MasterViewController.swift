@@ -7,12 +7,12 @@
 //
 
 import UIKit
+import PINRemoteImage
 
 class MasterViewController: UITableViewController {
 
   var detailViewController: DetailViewController? = nil
   var gists = [Gist]()
-  var imageCache = [String: UIImage?]()
 
 
   override func viewDidLoad() {
@@ -100,30 +100,15 @@ class MasterViewController: UITableViewController {
     cell.textLabel?.text = gist.description
     cell.detailTextLabel?.text = gist.ownerLogin
     
-    cell.imageView?.image = nil
-    
-    if let urlString = gist.ownerAvatarURL {
-      if let cachedImage = imageCache[urlString] {
-        cell.imageView?.image = cachedImage
-      } else {
-        GitHubAPIManager.sharedInstance.imageFrom(urlString: urlString) {
-          (image, error) in guard error == nil else {
-            print(error!)
-            return
-          }
-
-          self.imageCache[urlString] = image
-        
+    if let urlString = gist.ownerAvatarURL,
+      let url = URL(string: urlString) {
+        cell.imageView?.pin_setImage(from: url, placeholderImage: UIImage(named: "placeholder.png")) { result in
           if let cellToUpdate = self.tableView?.cellForRow(at: indexPath) {
-            // will work fine even if image is nil
-            cellToUpdate.imageView?.image = image
-          
-            // need to reload the view, which won't happen otherwise
-            // since this is in an async call
             cellToUpdate.setNeedsLayout()
           }
         }
-      }
+      } else {
+        cell.imageView?.image = UIImage(named: "placeholder.png")
     }
     
     return cell

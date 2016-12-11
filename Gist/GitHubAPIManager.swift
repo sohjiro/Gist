@@ -64,4 +64,60 @@ struct GitHubAPIManager {
 
     return .success(gists)
   }
+  
+  private func parseNextPageFromHeaders(response: HTTPURLResponse?) -> String? {
+    guard let linkHeader = response?.allHeaderFields["Link"] as? String else {
+      return nil
+    }
+    print(linkHeader)
+    /* looks like: <https://...?page=2>; rel="next", <https://...?page=6>; rel="last" */
+    // so split on ","
+    let components = linkHeader.characters.split { $0 == "," }.map { String($0) }
+    // now we  have 2 lines like '<https://...?page=2>; rel="next"'
+    print(components)
+    
+    for item in components {
+      let rangeOfNext = item.range(of: "rel=\"next\"", options: [])
+      guard rangeOfNext != nil else {
+        continue
+      }
+      
+      let rangeOfPaddedURL = item.range(of: "<(.*)>;", options: .regularExpression, range: nil, locale: nil)
+      guard let range = rangeOfPaddedURL else {
+        return nil
+      }
+      
+      let nextURL = item.substring(with: range)
+      
+      // strip off the < and >;
+      let start = nextURL.index(range.lowerBound, offsetBy: 1)
+      let end = nextURL.index(range.upperBound, offsetBy: -2)
+      
+      let trimmedRange = start ..< end
+      return nextURL.substring(with: trimmedRange)
+    }
+    
+    return nil
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
